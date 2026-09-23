@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Marketplace — Front Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --text: #0f172a;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --success: #16a34a;
+        --warning: #d97706;
+        --error: #dc2626;
+        --radius: 8px;
+        --radius-lg: 12px;
+        --header-h: 72px;
+        padding-top: env(safe-area-inset-top, 0px);
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Inter", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      img,
+      svg {
+        display: block;
+      }
+      button {
+        font-family: inherit;
+        cursor: pointer;
+        border: none;
+        background: none;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 32px;
+      }
+      @media (max-width: 900px) {
+        .container {
+          padding: 0 24px;
+        }
+      }
+      @media (max-width: 480px) {
+        .container {
+          padding: 0 16px;
+        }
+      }
+
+      /* HEADER */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        height: var(--header-h);
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding-top: env(safe-area-inset-top, 0px);
+      }
+      .header-row {
+        height: var(--header-h);
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 32px;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+      .logo {
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .logo .mark {
+        width: 32px;
+        height: 32px;
+        background: var(--primary);
+        color: #fff;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .search {
+        flex: 1;
+        max-width: 560px;
+        display: flex;
+        align-items: center;
+      }
+      .search-toggle {
+        display: flex;
+        border: 1px solid var(--border);
+        border-radius: 8px 0 0 8px;
+        border-right: none;
+        overflow: hidden;
+        flex-shrink: 0;
+        height: 44px;
+      }
+      .search-toggle button {
+        padding: 0 14px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+        background: var(--bg);
+        height: 100%;
+      }
+      .search-toggle button.active {
+        background: var(--primary);
+        color: #fff;
+      }
+      .search input {
+        flex: 1;
+        height: 44px;
+        border: 1px solid var(--border);
+        border-left: none;
+        border-right: none;
+        padding: 0 12px;
+        font-size: 14px;
+        background: var(--surface);
+        color: var(--text);
+        outline: none;
+      }
+      .search input:focus {
+        border-color: var(--primary);
+      }
+      .search .go {
+        height: 44px;
+        width: 44px;
+        background: var(--primary);
+        color: #fff;
+        border-radius: 0 8px 8px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .search .go svg {
+        width: 18px;
+        height: 18px;
+        stroke: #fff;
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: auto;
+        flex-shrink: 0;
+      }
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text);
+      }
+      .icon-btn:hover {
+        background: var(--bg);
+      }
+      .icon-btn svg {
+        width: 20px;
+        height: 20px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.8;
+      }
+
+      .avatar,
+      .avatar:hover,
+      .avatar:focus,
+      .avatar:active {
+        background: var(--primary);
+        color: #fff;
+      }
+      .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--primary);
+        color: #fff;
+        font-weight: 700;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .avatar-wrap {
+        position: relative;
+      }
+      .account-menu {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 8px);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+        min-width: 190px;
+        z-index: 200;
+        overflow: hidden;
+        display: none;
+      }
+      .account-menu.open {
+        display: block;
+      }
+      .account-menu .item {
+        padding: 10px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .account-menu .item:hover {
+        background: var(--primary);
+      }
+      .account-menu .sep {
+        height: 1px;
+        background: var(--border);
+        margin: 4px 0;
+      }
+      .account-menu .item.sell {
+        color: var(--muted);
+        font-weight: 600;
+      }
+      @media (max-width: 900px) {
+        .search {
+          max-width: none;
+        }
+      }
+      @media (max-width: 768px) {
+        .search-toggle {
+          display: none;
+        }
+      }
+
+      /* LAYOUT */
+      .layout {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 24px;
+        align-items: start;
+        padding: 32px 0 64px;
+      }
+      @media (max-width: 900px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* SIDEBAR */
+      .sidebar {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 20px;
+        position: sticky;
+        top: calc(var(--header-h)+20px);
+      }
+      .sidebar h4 {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--muted);
+        letter-spacing: 0.02em;
+        margin-bottom: 10px;
+      }
+      .cat-list {
+        list-style: none;
+        margin-bottom: 20px;
+      }
+      .cat-list li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        cursor: pointer;
+      }
+      .cat-list li:hover {
+        background: var(--bg);
+      }
+      .cat-list li.active {
+        background: #eff6ff;
+        color: var(--primary);
+      }
+      .cat-list li .e {
+        font-size: 15px;
+        width: 18px;
+        text-align: center;
+      }
+      .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 16px 0;
+      }
+      .filter-group {
+        margin-bottom: 16px;
+      }
+      .filter-group .label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .chip {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 6px 10px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        color: var(--muted);
+      }
+      .chip.active {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #fff;
+      }
+      @media (max-width: 900px) {
+        .sidebar {
+          position: static;
+        }
+      }
+
+      /* MAIN */
+      main {
+        min-width: 0;
+      }
+      .section {
+        margin-bottom: 48px;
+      }
+      .section:last-child {
+        margin-bottom: 0;
+      }
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 18px;
+        gap: 16px;
+      }
+      .section-head h2 {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+      .view-all {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--primary);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .view-all svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+      @media (max-width: 1024px) {
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 480px) {
+        .grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        transition:
+          box-shadow 0.15s,
+          transform 0.15s;
+      }
+      .card:hover {
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        transform: translateY(-2px);
+      }
+      .card-media {
+        height: 170px;
+        background: var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 54px;
+        position: relative;
+      }
+      .card-media .tag {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 5px;
+        background: var(--surface);
+        color: var(--muted);
+        border: 1px solid var(--border);
+      }
+      .card-body {
+        padding: 14px;
+      }
+      .card-body .cat {
+        font-size: 11px;
+        color: var(--muted);
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .card-body h3 {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.35;
+        margin-bottom: 6px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 38px;
+      }
+      .card-rating {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .card-rating .star {
+        color: var(--warning);
+      }
+      .card-price {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+      }
+      .card-price .now {
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .card-price .was {
+        font-size: 12px;
+        color: var(--muted);
+        text-decoration: line-through;
+      }
+
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 20px 0;
+        text-align: center;
+        color: var(--muted);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-row">
+        <div class="logo"><span class="mark">M</span>Marketplace</div>
+        <div class="search">
+          <div class="search-toggle">
+            <button class="active">Products</button>
+            <button>Services</button>
+          </div>
+          <input type="search" placeholder="Search products or services…" />
+          <div class="go">
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="7" stroke-width="2" />
+              <path
+                d="M21 21l-4.3-4.3"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="icon-btn" aria-label="Cart">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M6 6h15l-1.5 9h-12z"
+                stroke-width="1.8"
+                stroke-linejoin="round"
+              />
+              <circle
+                cx="9"
+                cy="20"
+                r="1.4"
+                fill="currentColor"
+                stroke="none"
+              />
+              <circle
+                cx="18"
+                cy="20"
+                r="1.4"
+                fill="currentColor"
+                stroke="none"
+              />
+              <path d="M6 6L5 3H2" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+          </button>
+          <div class="avatar-wrap" id="accountWrap">
+            <button
+              class="icon-btn avatar"
+              id="profileBtn"
+              aria-label="Profile"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              PM
+            </button>
+            <div
+              class="account-menu"
+              id="accountMenu"
+              role="menu"
+              aria-hidden="true"
+            >
+              <div class="item" role="menuitem" tabindex="-1">👤 Profile</div>
+              <div class="item" role="menuitem" tabindex="-1">📦 Orders</div>
+              <div class="item" role="menuitem" tabindex="-1">📅 Bookings</div>
+              <div class="sep"></div>
+              <div class="item sell" role="menuitem" tabindex="-1">
+                🏪 Sell on Marketplace
+              </div>
+              <div class="sep"></div>
+              <div class="item" role="menuitem" tabindex="-1">🚪 Log out</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="layout">
+        <aside class="sidebar">
+          <h4>Categories</h4>
+          <ul class="cat-list">
+            <li class="active"><span class="e">🛍️</span>All</li>
+            <li><span class="e">💻</span>Electronics</li>
+            <li><span class="e">👗</span>Fashion</li>
+            <li><span class="e">🏠</span>Home &amp; Living</li>
+            <li><span class="e">💄</span>Beauty</li>
+            <li><span class="e">💆</span>Wellness</li>
+            <li><span class="e">🏋️</span>Fitness</li>
+            <li><span class="e">🔧</span>Home Services</li>
+            <li><span class="e">💼</span>Professional</li>
+            <li><span class="e">📸</span>Photography</li>
+          </ul>
+          <div class="divider"></div>
+          <h4>Filter</h4>
+          <div class="filter-group">
+            <div class="label">Price</div>
+            <div class="chip-row">
+              <span class="chip active">Any</span>
+              <span class="chip">Under ₹1,000</span>
+              <span class="chip">₹1,000–5,000</span>
+              <span class="chip">₹5,000+</span>
+            </div>
+          </div>
+          <div class="filter-group">
+            <div class="label">Rating</div>
+            <div class="chip-row">
+              <span class="chip active">Any</span>
+              <span class="chip">4★ &amp; up</span>
+              <span class="chip">4.5★ &amp; up</span>
+            </div>
+          </div>
+        </aside>
+
+        <main>
+          <div class="section">
+            <div class="section-head">
+              <h2>🛍️ Products</h2>
+              <a class="view-all" href="#"
+                >View all
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M9 5l7 7-7 7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  /></svg
+              ></a>
+            </div>
+            <div class="grid">
+              <div class="card">
+                <div class="card-media">👜</div>
+                <div class="card-body">
+                  <div class="cat">Fashion</div>
+                  <h3>Handcrafted Leather Wallet</h3>
+                  <div class="card-rating">
+                    <span class="star">★</span>4.7 (234)
+                  </div>
+                  <div class="card-price">
+                    <span class="now">₹3,999</span
+                    ><span class="was">₹4,999</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-media">
+                  🎧<span class="tag">Bestseller</span>
+                </div>
+                <div class="card-body">
+                  <div class="cat">Electronics</div>
+                  <h3>Wireless Noise-Cancelling Headphones</h3>
+                  <div class="card-rating">
+                    <span class="star">★</span>4.5 (1.2k)
+                  </div>
+                  <div class="card-price">
+                    <span class="now">₹9,999</span
+                    ><span class="was">₹12,999</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-media">🧴</div>
+                <div class="card-body">
+                  <div class="cat">Beauty</div>
+                  <h3>Organic Skincare Gift Set</h3>
+                  <div class="card-rating">
+                    <span class="star">★</span>4.8 (89)
+                  </div>
+                  <div class="card-price"><span class="now">₹2,499</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-head">
+              <h2>📅 Services</h2>
+              <a class="view-all" href="#"
+                >View all
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M9 5l7 7-7 7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  /></svg
+              ></a>
+            </div>
+            <div class="grid">
+              <div class="card">
+                <div class="card-media">💆</div>
+                <div class="card-body">
+                  <div class="cat">Wellness</div>
+                  <h3>Professional Deep Tissue Massage</h3>
+                  <div class="card-rating">
+                    <span class="star">★</span>4.9 (312)
+                  </div>
+                  <div class="card-price"><span class="now">₹2,500</span></div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-media">🧘</div>
+                <div class="card-body">
+                  <div class="cat">Fitness</div>
+                  <h3>Online Yoga &amp; Mindfulness Class</h3>
+                  <div class="card-rating">
+                    <span class="star">★</span>4.8 (541)
+                  </div>
+                  <div class="card-price"><span class="now">₹800</span></div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-media">🏠</div>
+                <div class="card-body">
+                  <div class="cat">Home Services</div>
+                  <h3>Home Deep Cleaning Service</h3>
+                  <div class="card-rating">
+                    <span class="star">★</span>4.6 (203)
+                  </div>
+                  <div class="card-price"><span class="now">₹1,999</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <footer>
+      Front dashboard — buyer-facing discovery only · UI/UX submission
+    </footer>
+
+    <script>
+      (function () {
+        var btn = document.getElementById("profileBtn");
+        var menu = document.getElementById("accountMenu");
+
+        function openMenu() {
+          menu.classList.add("open");
+          menu.setAttribute("aria-hidden", "false");
+          btn.setAttribute("aria-expanded", "true");
+        }
+        function closeMenu() {
+          menu.classList.remove("open");
+          menu.setAttribute("aria-hidden", "true");
+          btn.setAttribute("aria-expanded", "false");
+        }
+        function isOpen() {
+          return menu.classList.contains("open");
+        }
+
+        // 2 & 3: toggle on button click
+        btn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          isOpen() ? closeMenu() : openMenu();
+        });
+
+        // 4: click outside closes
+        document.addEventListener("click", function (e) {
+          if (isOpen() && !menu.contains(e.target) && !btn.contains(e.target)) {
+            closeMenu();
+          }
+        });
+
+        // 5: selecting an item closes the menu after the action
+        menu.querySelectorAll(".item").forEach(function (item) {
+          item.addEventListener("click", function () {
+            // (navigation/action would happen here)
+            closeMenu();
+          });
+        });
+
+        // 6: Escape closes
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && isOpen()) {
+            closeMenu();
+            btn.focus();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
