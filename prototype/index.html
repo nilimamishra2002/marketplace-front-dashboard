@@ -29,6 +29,7 @@
         --radius-lg: 12px;
         --header-h: 72px;
         padding-top: env(safe-area-inset-top, 0px);
+        color-scheme: light;
       }
       *,
       *::before,
@@ -200,14 +201,6 @@
         fill: none;
         stroke-width: 1.8;
       }
-
-      .avatar,
-      .avatar:hover,
-      .avatar:focus,
-      .avatar:active {
-        background: var(--primary);
-        color: #fff;
-      }
       .avatar {
         width: 32px;
         height: 32px;
@@ -219,6 +212,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
+      }
+      .avatar,
+      .avatar:hover,
+      .avatar:focus,
+      .avatar:active {
+        background: var(--primary);
+        color: #fff;
       }
       .avatar-wrap {
         position: relative;
@@ -249,7 +249,7 @@
         gap: 8px;
       }
       .account-menu .item:hover {
-        background: var(--primary);
+        background: var(--bg);
       }
       .account-menu .sep {
         height: 1px;
@@ -320,7 +320,7 @@
         background: var(--bg);
       }
       .cat-list li.active {
-        background: #eff6ff;
+        background: rgba(37, 99, 235, 0.18);
         color: var(--primary);
       }
       .cat-list li .e {
@@ -502,6 +502,47 @@
         text-decoration: line-through;
       }
 
+      /* Status Tracker — minimal addition inside existing cards */
+      .card-status {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid var(--border);
+      }
+      .status-badge {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        background: var(--bg);
+      }
+      .status-badge.done {
+        color: var(--success);
+        border-color: var(--success);
+        background: rgba(22, 163, 74, 0.08);
+      }
+      .status-btn {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 14px;
+        background: var(--primary);
+        color: #fff;
+      }
+      .status-btn:hover {
+        background: var(--primary-dark);
+      }
+      .status-btn:disabled {
+        background: var(--border);
+        color: var(--muted);
+        cursor: default;
+      }
+
       footer {
         border-top: 1px solid var(--border);
         padding: 20px 0;
@@ -641,16 +682,22 @@
             </div>
             <div class="grid">
               <div class="card">
-                <div class="card-media">👜</div>
+                <div class="card-media">👕</div>
                 <div class="card-body">
                   <div class="cat">Fashion</div>
-                  <h3>Handcrafted Leather Wallet</h3>
+                  <h3>Classic Cotton T-Shirt</h3>
                   <div class="card-rating">
-                    <span class="star">★</span>4.7 (234)
+                    <span class="star">★</span>4.6 (312)
                   </div>
                   <div class="card-price">
-                    <span class="now">₹3,999</span
-                    ><span class="was">₹4,999</span>
+                    <span class="now">₹599</span><span class="was">₹799</span>
+                  </div>
+                  <div class="card-status">
+                    <span class="status-badge" id="tshirtStatusBadge"
+                      >Pending</span
+                    ><button class="status-btn" id="shipTShirtBtn">
+                      Ship T-shirt
+                    </button>
                   </div>
                 </div>
               </div>
@@ -699,14 +746,21 @@
             </div>
             <div class="grid">
               <div class="card">
-                <div class="card-media">💆</div>
+                <div class="card-media">💇</div>
                 <div class="card-body">
                   <div class="cat">Wellness</div>
-                  <h3>Professional Deep Tissue Massage</h3>
+                  <h3>Professional Haircut</h3>
                   <div class="card-rating">
                     <span class="star">★</span>4.9 (312)
                   </div>
-                  <div class="card-price"><span class="now">₹2,500</span></div>
+                  <div class="card-price"><span class="now">₹300</span></div>
+                  <div class="card-status">
+                    <span class="status-badge" id="haircutStatusBadge"
+                      >Scheduled</span
+                    ><button class="status-btn" id="completeHaircutBtn">
+                      Complete Haircut
+                    </button>
+                  </div>
                 </div>
               </div>
               <div class="card">
@@ -741,54 +795,6 @@
       Front dashboard — buyer-facing discovery only · UI/UX submission
     </footer>
 
-    <script>
-      (function () {
-        var btn = document.getElementById("profileBtn");
-        var menu = document.getElementById("accountMenu");
-
-        function openMenu() {
-          menu.classList.add("open");
-          menu.setAttribute("aria-hidden", "false");
-          btn.setAttribute("aria-expanded", "true");
-        }
-        function closeMenu() {
-          menu.classList.remove("open");
-          menu.setAttribute("aria-hidden", "true");
-          btn.setAttribute("aria-expanded", "false");
-        }
-        function isOpen() {
-          return menu.classList.contains("open");
-        }
-
-        // 2 & 3: toggle on button click
-        btn.addEventListener("click", function (e) {
-          e.stopPropagation();
-          isOpen() ? closeMenu() : openMenu();
-        });
-
-        // 4: click outside closes
-        document.addEventListener("click", function (e) {
-          if (isOpen() && !menu.contains(e.target) && !btn.contains(e.target)) {
-            closeMenu();
-          }
-        });
-
-        // 5: selecting an item closes the menu after the action
-        menu.querySelectorAll(".item").forEach(function (item) {
-          item.addEventListener("click", function () {
-            // (navigation/action would happen here)
-            closeMenu();
-          });
-        });
-
-        // 6: Escape closes
-        document.addEventListener("keydown", function (e) {
-          if (e.key === "Escape" && isOpen()) {
-            closeMenu();
-            btn.focus();
-          }
-        });
-      })();
-    </script>
+    <script src="script.js"></script>
   </body>
 </html>
