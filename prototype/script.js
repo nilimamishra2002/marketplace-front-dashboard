@@ -50,6 +50,22 @@
   });
 })();
 
+/* ============================================================
+   STATUS TRACKER — internship task
+   ------------------------------------------------------------
+   Two independent orders live in the same cart:
+     - a physical product (T-shirt)  -> Pending  -> Shipped
+     - a service booking  (Haircut)  -> Scheduled -> Completed
+
+   Each is its own plain object. shipTShirt() only ever writes
+   to tshirt.status, and completeHaircut() only ever writes to
+   haircut.status — neither function reads or touches the
+   other's field, so one can never affect the other.
+
+   The dashboard UI updates immediately after each action; this
+   is the primary demonstration. console.log/console.assert
+   still run alongside as a secondary, code-level proof.
+   ============================================================ */
 
 var tshirt = { name: "Classic Cotton T-Shirt", status: "Pending" };
 var haircut = { name: "Professional Haircut", status: "Scheduled" };
@@ -144,3 +160,85 @@ console.assert(
 console.log(
   "Click 'Ship T-shirt' / 'Complete Haircut' on the dashboard (or call shipTShirt()/completeHaircut() here) to see the independent transitions.",
 );
+
+/* ============================================================
+   DOUBLE BOOKING BUG — internship task
+   ------------------------------------------------------------
+   Exactly 1 T-shirt in stock. Two users (A and B) try to buy
+   it "at the same time". Only one may succeed.
+
+   JavaScript runs on a single thread with "run-to-completion":
+   once a plain (non-async) function starts, it always finishes
+   before any other code can run. So as long as checking the
+   stock and decrementing it happen inside ONE plain function
+   call — with no async gap in between — nothing can slip in
+   between the check and the update. That single synchronous
+   step is the entire protection here: no lock, no library.
+   ============================================================ */
+
+var tshirtStock = 1; // exactly 1 in stock, per the task
+
+// The protected purchase step: check stock and decrement it as
+// ONE synchronous operation. This is what makes it safe.
+function tryBuyTShirt(user) {
+  if (tshirtStock > 0) {
+    tshirtStock = tshirtStock - 1;
+    return { user: user, result: "Purchase Successful" };
+  }
+  return { user: user, result: "Out of Stock" };
+}
+
+function updateBuyUI(outcomeA, outcomeB) {
+  document.getElementById("stockBadge").textContent = "Stock: " + tshirtStock;
+
+  var resultEl = document.getElementById("buyResult");
+  resultEl.innerHTML =
+    "User A: <strong>" +
+    outcomeA.result +
+    "</strong> &nbsp; " +
+    "User B: <strong>" +
+    outcomeB.result +
+    "</strong>";
+  resultEl.classList.remove("ok", "fail");
+  resultEl.classList.add("ok"); // the scenario succeeded: exactly one buyer got the item
+
+  document.getElementById("buyBtn").disabled = true;
+}
+
+// Simulates User A and User B clicking "Buy" at the same moment:
+// both purchase attempts are queued in the exact same tick.
+function simulateConcurrentBuy() {
+  Promise.resolve().then(function () {
+    var resultA = tryBuyTShirt("User A");
+    var resultB = tryBuyTShirt("User B");
+
+    console.log("--- Double Booking simulation ---");
+    console.log("User A ->", resultA.result);
+    console.log("User B ->", resultB.result);
+    console.log("Final stock:", tshirtStock);
+
+    console.assert(tshirtStock === 0, "Expected final stock to be 0");
+    console.assert(
+      (resultA.result === "Purchase Successful") !==
+        (resultB.result === "Purchase Successful"),
+      "Exactly one of User A / User B must succeed, not both and not neither",
+    );
+    console.assert(
+      !(
+        resultA.result === "Purchase Successful" &&
+        resultB.result === "Purchase Successful"
+      ),
+      "Both users must NOT be able to buy the same single item",
+    );
+
+    updateBuyUI(resultA, resultB);
+  });
+}
+
+document
+  .getElementById("buyBtn")
+  .addEventListener("click", simulateConcurrentBuy);
+
+console.log("--- Double Booking demo ready ---");
+console.log("Initial stock:", tshirtStock);
+console.assert(tshirtStock === 1, "Expected initial stock to be exactly 1");

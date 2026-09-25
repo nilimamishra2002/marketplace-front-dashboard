@@ -542,6 +542,17 @@
         color: var(--muted);
         cursor: default;
       }
+      .buy-result {
+        font-size: 11px;
+        font-weight: 700;
+        margin-top: 6px;
+      }
+      .buy-result.ok {
+        color: var(--success);
+      }
+      .buy-result.fail {
+        color: var(--error);
+      }
 
       footer {
         border-top: 1px solid var(--border);
@@ -699,6 +710,13 @@
                       Ship T-shirt
                     </button>
                   </div>
+                  <div class="card-status">
+                    <span class="status-badge" id="stockBadge">Stock: 1</span
+                    ><button class="status-btn" id="buyBtn">
+                      Buy
+                    </button>
+                  </div>
+                  <div class="buy-result" id="buyResult"></div>
                 </div>
               </div>
               <div class="card">
