@@ -1,14 +1,18 @@
-# Marketplace — Front Dashboard & Status Tracker
+# Marketplace — Front Dashboard & Internship Tasks
 
-A front-end prototype for a marketplace dashboard, created as part of the internship tasks.
+A front-end marketplace prototype developed as part of the internship tasks.
 
-## What I Built
+The project started as a buyer-facing marketplace dashboard and has been progressively extended with the functionality required by the assigned tasks.
 
-### 1. Marketplace Front Dashboard
+---
 
-Designed a buyer-focused discovery dashboard based on the provided marketplace requirements.
+## Completed Tasks
 
-The dashboard includes:
+### Task 1 — Marketplace Front Dashboard UI/UX
+
+Designed and implemented a buyer-focused marketplace discovery dashboard based on the provided project requirements.
+
+Implemented:
 
 - Search with Product / Service selection
 - Category and quick filters
@@ -16,13 +20,15 @@ The dashboard includes:
 - Product and Service cards
 - Cart and Profile access
 - Seller entry point through the Profile menu
-- Responsive, clean marketplace-oriented UI
+- Responsive marketplace-oriented UI
 
-The design focuses on helping a buyer **discover, search and filter listings** before moving to product/service details, cart or booking.
+The dashboard focuses on **discovery, search and filtering** before a buyer moves to product/service details, cart or booking.
 
-### 2. Mixed-Cart Status Tracker
+---
 
-Added the required status-tracking functionality directly into the existing Product and Service cards.
+### Task 2 — Mixed-Cart Status Tracker
+
+Implemented status tracking for two different types of items in the same cart:
 
 | Item | Initial Status | Action | Final Status |
 |------|----------------|--------|--------------|
@@ -31,17 +37,22 @@ Added the required status-tracking functionality directly into the existing Prod
 
 The two items maintain **independent states**.
 
-For example:
+- Shipping the T-shirt does not change the Haircut status.
+- Completing the Haircut does not change the T-shirt status.
+- Status changes are reflected directly in the dashboard UI.
+- JavaScript assertions provide additional verification.
 
-- Shipping the T-shirt changes only the T-shirt status.
-- Completing the haircut changes only the haircut status.
-- One action does not modify the other item's status.
+---
 
-The status changes are also reflected visually in the dashboard.
+### Task 3 — Double Booking / Overselling Prevention
 
-## Implementation
+Implemented a simulation for the marketplace's single-stock double-booking scenario.
+
+The T-shirt starts with exactly **1 item in stock**.
+
+Two users are simulated attempting to purchase the same item:
 
 ```text
-prototype/
-├── index.html
-└── script.js
+User A → Purchase Successful
+User B → Out of Stock
+Final Stock → 0
