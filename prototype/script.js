@@ -191,16 +191,22 @@ function tryBuyTShirt(user) {
 function updateBuyUI(outcomeA, outcomeB) {
   document.getElementById("stockBadge").textContent = "Stock: " + tshirtStock;
 
+  // Exact result strings ("Purchase Successful" / "Out of Stock") are unchanged —
+  // only the presentation (two clean lines, color-coded) is polished here.
   var resultEl = document.getElementById("buyResult");
+  var classA = outcomeA.result === "Purchase Successful" ? "ok" : "fail";
+  var classB = outcomeB.result === "Purchase Successful" ? "ok" : "fail";
   resultEl.innerHTML =
-    "User A: <strong>" +
+    '<span class="' +
+    classA +
+    '">User A: ' +
     outcomeA.result +
-    "</strong> &nbsp; " +
-    "User B: <strong>" +
+    "</span><br>" +
+    '<span class="' +
+    classB +
+    '">User B: ' +
     outcomeB.result +
-    "</strong>";
-  resultEl.classList.remove("ok", "fail");
-  resultEl.classList.add("ok"); // the scenario succeeded: exactly one buyer got the item
+    "</span>";
 
   document.getElementById("buyBtn").disabled = true;
 }
@@ -242,3 +248,30 @@ document
 console.log("--- Double Booking demo ready ---");
 console.log("Initial stock:", tshirtStock);
 console.assert(tshirtStock === 1, "Expected initial stock to be exactly 1");
+
+/* ============================================================
+   PRODUCTS / SERVICES SEARCH TOGGLE
+   ------------------------------------------------------------
+   Purely a UI state switch: which button looks active, and
+   what the search placeholder says. No search/filter logic.
+   ============================================================ */
+(function () {
+  var productsBtn = document.getElementById("toggleProductsBtn");
+  var servicesBtn = document.getElementById("toggleServicesBtn");
+  var searchInput = document.getElementById("searchInput");
+
+  function activateProducts() {
+    productsBtn.classList.add("active");
+    servicesBtn.classList.remove("active");
+    searchInput.placeholder = "Search products...";
+  }
+
+  function activateServices() {
+    servicesBtn.classList.add("active");
+    productsBtn.classList.remove("active");
+    searchInput.placeholder = "Search services...";
+  }
+
+  productsBtn.addEventListener("click", activateProducts);
+  servicesBtn.addEventListener("click", activateServices);
+})();

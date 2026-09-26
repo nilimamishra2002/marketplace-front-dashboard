@@ -546,12 +546,20 @@
         font-size: 11px;
         font-weight: 700;
         margin-top: 6px;
+        line-height: 1.6;
       }
-      .buy-result.ok {
+      .buy-result .ok {
         color: var(--success);
       }
-      .buy-result.fail {
+      .buy-result .fail {
         color: var(--error);
+      }
+      .card-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid var(--border);
       }
 
       footer {
@@ -569,10 +577,14 @@
         <div class="logo"><span class="mark">M</span>Marketplace</div>
         <div class="search">
           <div class="search-toggle">
-            <button class="active">Products</button>
-            <button>Services</button>
+            <button class="active" id="toggleProductsBtn">Products</button>
+            <button id="toggleServicesBtn">Services</button>
           </div>
-          <input type="search" placeholder="Search products or services…" />
+          <input
+            type="search"
+            id="searchInput"
+            placeholder="Search products or services…"
+          />
           <div class="go">
             <svg viewBox="0 0 24 24">
               <circle cx="11" cy="11" r="7" stroke-width="2" />
@@ -704,19 +716,17 @@
                     <span class="now">₹599</span><span class="was">₹799</span>
                   </div>
                   <div class="card-status">
+                    <span class="status-badge" id="stockBadge">Stock: 1</span
+                    ><button class="status-btn" id="buyBtn">Buy Now</button>
+                  </div>
+                  <div class="buy-result" id="buyResult"></div>
+                  <div class="card-status">
                     <span class="status-badge" id="tshirtStatusBadge"
                       >Pending</span
                     ><button class="status-btn" id="shipTShirtBtn">
                       Ship T-shirt
                     </button>
                   </div>
-                  <div class="card-status">
-                    <span class="status-badge" id="stockBadge">Stock: 1</span
-                    ><button class="status-btn" id="buyBtn">
-                      Buy
-                    </button>
-                  </div>
-                  <div class="buy-result" id="buyResult"></div>
                 </div>
               </div>
               <div class="card">
@@ -733,6 +743,9 @@
                     <span class="now">₹9,999</span
                     ><span class="was">₹12,999</span>
                   </div>
+                  <div class="card-actions">
+                    <button class="status-btn buy-now-btn">Buy Now</button>
+                  </div>
                 </div>
               </div>
               <div class="card">
@@ -744,6 +757,9 @@
                     <span class="star">★</span>4.8 (89)
                   </div>
                   <div class="card-price"><span class="now">₹2,499</span></div>
+                  <div class="card-actions">
+                    <button class="status-btn buy-now-btn">Buy Now</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -772,6 +788,9 @@
                     <span class="star">★</span>4.9 (312)
                   </div>
                   <div class="card-price"><span class="now">₹300</span></div>
+                  <div class="card-actions">
+                    <button class="status-btn book-now-btn">Book Now</button>
+                  </div>
                   <div class="card-status">
                     <span class="status-badge" id="haircutStatusBadge"
                       >Scheduled</span
@@ -790,6 +809,9 @@
                     <span class="star">★</span>4.8 (541)
                   </div>
                   <div class="card-price"><span class="now">₹800</span></div>
+                  <div class="card-actions">
+                    <button class="status-btn book-now-btn">Book Now</button>
+                  </div>
                 </div>
               </div>
               <div class="card">
@@ -801,6 +823,9 @@
                     <span class="star">★</span>4.6 (203)
                   </div>
                   <div class="card-price"><span class="now">₹1,999</span></div>
+                  <div class="card-actions">
+                    <button class="status-btn book-now-btn">Book Now</button>
+                  </div>
                 </div>
               </div>
             </div>

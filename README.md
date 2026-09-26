@@ -2,57 +2,52 @@
 
 A front-end marketplace prototype developed as part of the internship tasks.
 
-The project started as a buyer-facing marketplace dashboard and has been progressively extended with the functionality required by the assigned tasks.
+## How to Run and Test
 
----
+### Requirements
 
-## Completed Tasks
+- A modern web browser such as Google Chrome, Microsoft Edge, or Firefox
+- No Node.js, framework, database, or backend is required
 
-### Task 1 — Marketplace Front Dashboard UI/UX
+### Steps
 
-Designed and implemented a buyer-focused marketplace discovery dashboard based on the provided project requirements.
+1. Download or clone this repository to your computer.
+2. Open the project folder.
+3. Navigate to:
 
-Implemented:
+   `prototype/index.html`
 
-- Search with Product / Service selection
-- Category and quick filters
-- Separate Product and Service sections
-- Product and Service cards
-- Cart and Profile access
-- Seller entry point through the Profile menu
-- Responsive marketplace-oriented UI
+4. Double-click `index.html` or open it directly in a web browser.
+5. The Marketplace Front Dashboard will appear.
 
-The dashboard focuses on **discovery, search and filtering** before a buyer moves to product/service details, cart or booking.
+### Test the Status Tracker
 
----
+1. Locate the **Classic Cotton T-Shirt** card.
+2. Click **Ship T-shirt**.
+3. Verify that its status changes from **Pending** to **Shipped**.
+4. Locate the **Professional Haircut** card.
+5. Click **Complete Haircut**.
+6. Verify that its status changes from **Scheduled** to **Completed**.
+7. Verify that changing one status does not change the other.
 
-### Task 2 — Mixed-Cart Status Tracker
+### Test the Double Booking Simulation
 
-Implemented status tracking for two different types of items in the same cart:
+1. Locate the **Classic Cotton T-Shirt** card.
+2. Verify that the stock shows **Stock: 1**.
+3. Click **Buy (simulate 2 users)**.
+4. Verify that the dashboard displays:
+   - User A: **Purchase Successful**
+   - User B: **Out of Stock**
+   - Final Stock: **0**
+5. Open the browser Developer Console (`F12` → Console) to view the JavaScript logs and assertions used to verify the result.
 
-| Item | Initial Status | Action | Final Status |
-|------|----------------|--------|--------------|
-| T-shirt | Pending | Ship T-shirt | Shipped |
-| Haircut | Scheduled | Complete Haircut | Completed |
+## Hardest Problem & Solution
 
-The two items maintain **independent states**.
+The hardest problem was handling the double-booking scenario where two users attempt to purchase the only available T-shirt at the same time. The challenge was ensuring that both users could not successfully purchase the same single item. I solved this by keeping the stock check and stock decrement together in one synchronous purchase operation. The first successful purchase reduces the stock from 1 to 0, so the second purchase attempt immediately receives an **“Out of Stock”** result. Console assertions were also added to verify that exactly one user succeeds and that the final stock is 0.
 
-- Shipping the T-shirt does not change the Haircut status.
-- Completing the Haircut does not change the T-shirt status.
-- Status changes are reflected directly in the dashboard UI.
-- JavaScript assertions provide additional verification.
-
----
-
-### Task 3 — Double Booking / Overselling Prevention
-
-Implemented a simulation for the marketplace's single-stock double-booking scenario.
-
-The T-shirt starts with exactly **1 item in stock**.
-
-Two users are simulated attempting to purchase the same item:
+## Project Structure
 
 ```text
-User A → Purchase Successful
-User B → Out of Stock
-Final Stock → 0
+prototype/
+├── index.html
+└── script.js
